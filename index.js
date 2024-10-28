@@ -22,12 +22,23 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-app.get('/', (req, res) => {
+//get method
+app.get('/getUsers', (req, res) => {
 
   User.find()
       .then(user => res.send(user))
       .catch(err => res.send('Error: ' +  err));
 })
+
+//add new user
+app.post('/addUser', (req, res) => {
+  const userDetails = req.body;
+  const newUser = new User(userDetails);
+  
+  newUser.save()
+    .then(() => res.send('User added!'))
+    .catch((error) => res.status(400).send('Error: ' + error));
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
