@@ -1,12 +1,15 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app=express()
 const port=8080
 const mongo_url='mongodb+srv://sa:sa@projectdb.enabx.mongodb.net/?retryWrites=true&w=majority&appName=projectdb'
 
 app.use(bodyParser.json());
+// Enable CORS for all routes
+app.use(cors());
 
 //Database connection
 mongoose.connect(mongo_url).then(() => {
