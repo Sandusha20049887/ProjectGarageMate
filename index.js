@@ -57,6 +57,15 @@ app.post('/addUser', (req, res) => {
     .catch((error) => res.status(400).send('Error: ' + error));
 });
 
+//get posts method
+app.get('/getPost', (req, res) => {
+
+  Post.find()
+      .then(post => res.send(post))
+      .catch(err => res.send('Error: ' +  err));
+})
+
+
 //add new Post
 app.post('/addPost', (req, res) => {
   const postDetails = req.body;
