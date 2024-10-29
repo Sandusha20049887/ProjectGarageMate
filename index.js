@@ -65,6 +65,14 @@ app.get('/getPost', (req, res) => {
       .catch(err => res.send('Error: ' +  err));
 })
 
+//get posts by user
+app.get('/getPost/:id', (req, res) => {
+  const uname = req.params.id;
+  console.log(uname);
+  Post.find({ userName: uname})
+      .then(post => res.send(post))
+      .catch(err => res.send('Error: ' +  err));
+})
 
 //add new Post
 app.post('/addPost', (req, res) => {
