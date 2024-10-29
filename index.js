@@ -15,12 +15,29 @@ mongoose.connect(mongo_url).then(() => {
 .catch((error) => console.log("errror - "+error));
 
 const userSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
+  username: String,
+  firstName: String,
+  lastName: String,
+  phoneNo: Number,
   email: String
 });
 
-const User = mongoose.model('User', userSchema);
+const postSchema = new mongoose.Schema({
+  make: String,
+  model: String,
+  year: String,
+  faultDescription: String,
+  garageName: String,
+  garageAddress: String,
+  contactNo: Number,
+  userName: String,
+  datePosted: Date,
+  status: String
+});
+
+
+const User = mongoose.model('user', userSchema);
+const Post = mongoose.model('post', postSchema);
 
 //get method
 app.get('/getUsers', (req, res) => {
@@ -37,6 +54,16 @@ app.post('/addUser', (req, res) => {
   
   newUser.save()
     .then(() => res.send('User added!'))
+    .catch((error) => res.status(400).send('Error: ' + error));
+});
+
+//add new Post
+app.post('/addPost', (req, res) => {
+  const postDetails = req.body;
+  const newPost = new Post(postDetails);
+  
+  newPost.save()
+    .then(() => res.send('Post added!'))
     .catch((error) => res.status(400).send('Error: ' + error));
 });
 
