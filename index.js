@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app=express()
-const port=8080
+const port=8000
 const mongo_url='mongodb+srv://sa:sa@projectdb.enabx.mongodb.net/?retryWrites=true&w=majority&appName=projectdb'
 
 app.use(bodyParser.json());
