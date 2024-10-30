@@ -41,9 +41,10 @@ const User = mongoose.model('user', userSchema);
 const Post = mongoose.model('post', postSchema);
 
 //get method
-app.get('/getUsers', (req, res) => {
+app.get('/getUser/:id', (req, res) => {
 
-  User.find()
+  const userid = req.params.id;
+  User.find({_id : userid})
     .then(user => res.send(user))
     .catch(err => res.send('Error: ' + err));
 })
@@ -55,7 +56,12 @@ app.post('/login', (req, res) => {
 
   User.findOne({ email: email, password: password })
     .then(loggedinuser => {
-      console.log(loggedinuser);
+      if (loggedinuser) {
+        console.log(loggedinuser);
+        res.send({ "userId": loggedinuser._id });
+      } else {
+        res.status(400).send('Error: Invalid email or password');
+      }
     })
 });
 
@@ -75,7 +81,7 @@ app.post('/registerUser', (req, res) => {
       }
     }).then(savedUser => {
       if (savedUser) {
-        res.send({ "User ID": savedUser._id });
+        res.send({ "userId": savedUser._id });
       }
     })
     .catch((error) => res.status(400).send('Error: ' + error));
@@ -91,9 +97,9 @@ app.get('/getPost', (req, res) => {
 
 //get posts by user
 app.get('/getPost/:id', (req, res) => {
-  const uname = req.params.id;
-  console.log(uname);
-  Post.find({ userName: uname })
+  const userid = req.params.id;
+  console.log(userid);
+  Post.find({ _id: userid })
     .then(post => res.send(post))
     .catch(err => res.send('Error: ' + err));
 })
