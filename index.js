@@ -3,9 +3,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const app=express()
-const port=8000
-const mongo_url='mongodb+srv://sa:sa@projectdb.enabx.mongodb.net/?retryWrites=true&w=majority&appName=projectdb'
+const app = express()
+const port = 8000
+const mongo_url = 'mongodb+srv://sa:sa@projectdb.enabx.mongodb.net/?retryWrites=true&w=majority&appName=projectdb'
 
 // Enable CORS for all routes
 app.use(cors());
@@ -14,8 +14,8 @@ app.use(bodyParser.json());
 //Database connection
 mongoose.connect(mongo_url).then(() => {
   console.log("database connected!");
-}) 
-.catch((error) => console.log("errror - "+error));
+})
+  .catch((error) => console.log("errror - " + error));
 
 const userSchema = new mongoose.Schema({
   name: String,
@@ -31,7 +31,7 @@ const postSchema = new mongoose.Schema({
   garageName: String,
   garageAddress: String,
   contactNo: Number,
-  userName: String,
+  userId: String,
   datePosted: Date,
   status: String
 });
@@ -44,17 +44,29 @@ const Post = mongoose.model('post', postSchema);
 app.get('/getUsers', (req, res) => {
 
   User.find()
-      .then(user => res.send(user))
-      .catch(err => res.send('Error: ' +  err));
+    .then(user => res.send(user))
+    .catch(err => res.send('Error: ' + err));
 })
 
-//add new user
+//register new user
 app.post('/registerUser', (req, res) => {
   const userDetails = req.body;
-  const newUser = new User(userDetails);
-  
-  newUser.save()
-    .then(() => res.send('Registered successfully!'))
+  //const newUser = new User(userDetails);
+
+  //validate email before insert 
+  User.findOne({ email: userDetails.email })
+    .then(existingUser => {
+      if (existingUser) {
+        res.status(400).send('Error: Email already exists');
+      } else {
+        const newUser = new User(userDetails);
+        return newUser.save();
+      }
+    }).then(savedUser => {
+      if (savedUser) {
+        res.send({"User ID": savedUser._id});
+      }
+    })
     .catch((error) => res.status(400).send('Error: ' + error));
 });
 
@@ -62,39 +74,39 @@ app.post('/registerUser', (req, res) => {
 app.get('/getPost', (req, res) => {
 
   Post.find()
-      .then(post => res.send(post))
-      .catch(err => res.send('Error: ' +  err));
+    .then(post => res.send(post))
+    .catch(err => res.send('Error: ' + err));
 })
 
 //get posts by user
 app.get('/getPost/:id', (req, res) => {
   const uname = req.params.id;
   console.log(uname);
-  Post.find({ userName: uname})
-      .then(post => res.send(post))
-      .catch(err => res.send('Error: ' +  err));
+  Post.find({ userName: uname })
+    .then(post => res.send(post))
+    .catch(err => res.send('Error: ' + err));
 })
 
 //add new Post
 app.post('/addPost', (req, res) => {
   const postDetails = req.body;
   const newPost = new Post(postDetails);
-  
+
   newPost.save()
     .then(() => res.send('Post added!'))
     .catch((error) => res.status(400).send('Error: ' + error));
 });
 
 //update post
-app.put('/updatePost/:id',(req,res) => {
+app.put('/updatePost/:id', (req, res) => {
   const postID = req.params.id;
   const updatedDetails = req.body;
 
   const updatePost = new Post(updatedDetails);
 
-  Post.findByIdAndUpdate(postID, updatePost, {new : true})
-  .then(() => res.send('Post Updated!'))
-  .catch((error) => res.status(400).send('Error: '+ error))
+  Post.findByIdAndUpdate(postID, updatePost, { new: true })
+    .then(() => res.send('Post Updated!'))
+    .catch((error) => res.status(400).send('Error: ' + error))
 })
 
 app.listen(port, () => {
