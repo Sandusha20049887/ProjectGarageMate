@@ -48,6 +48,17 @@ app.get('/getUsers', (req, res) => {
     .catch(err => res.send('Error: ' + err));
 })
 
+//login 
+app.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  User.findOne({ email: email, password: password })
+    .then(loggedinuser => {
+      console.log(loggedinuser);
+    })
+});
+
 //register new user
 app.post('/registerUser', (req, res) => {
   const userDetails = req.body;
@@ -64,7 +75,7 @@ app.post('/registerUser', (req, res) => {
       }
     }).then(savedUser => {
       if (savedUser) {
-        res.send({"User ID": savedUser._id});
+        res.send({ "User ID": savedUser._id });
       }
     })
     .catch((error) => res.status(400).send('Error: ' + error));
