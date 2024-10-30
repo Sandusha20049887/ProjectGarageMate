@@ -87,6 +87,18 @@ app.post('/addPost', (req, res) => {
     .catch((error) => res.status(400).send('Error: ' + error));
 });
 
+//update post
+app.put('/updatePost/:id',(req,res) => {
+  const postID = req.params.id;
+  const updatedDetails = req.body;
+
+  const updatePost = new Post(updatedDetails);
+
+  Post.findByIdAndUpdate(postID, updatePost, {new : true})
+  .then(() => res.send('Post Updated!'))
+  .catch((error) => res.status(400).send('Error: '+ error))
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 })
