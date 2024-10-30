@@ -42,7 +42,6 @@ const Post = mongoose.model('post', postSchema);
 //get users
 app.get('/getUser', (req, res) => {
 
-  const userid = req.params.id;
   User.find()
     .then(user => res.send(user))
     .catch(err => res.send('Error: ' + err));
