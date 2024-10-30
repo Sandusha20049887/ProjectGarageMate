@@ -7,9 +7,9 @@ const app=express()
 const port=8000
 const mongo_url='mongodb+srv://sa:sa@projectdb.enabx.mongodb.net/?retryWrites=true&w=majority&appName=projectdb'
 
-app.use(bodyParser.json());
 // Enable CORS for all routes
 app.use(cors());
+app.use(bodyParser.json());
 
 //Database connection
 mongoose.connect(mongo_url).then(() => {
