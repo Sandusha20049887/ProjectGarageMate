@@ -18,10 +18,8 @@ mongoose.connect(mongo_url).then(() => {
 .catch((error) => console.log("errror - "+error));
 
 const userSchema = new mongoose.Schema({
-  username: String,
-  firstName: String,
-  lastName: String,
-  phoneNo: Number,
+  name: String,
+  password: String,
   email: String
 });
 
@@ -51,12 +49,12 @@ app.get('/getUsers', (req, res) => {
 })
 
 //add new user
-app.post('/addUser', (req, res) => {
+app.post('/registerUser', (req, res) => {
   const userDetails = req.body;
   const newUser = new User(userDetails);
   
   newUser.save()
-    .then(() => res.send('User added!'))
+    .then(() => res.send('Registered successfully!'))
     .catch((error) => res.status(400).send('Error: ' + error));
 });
 
