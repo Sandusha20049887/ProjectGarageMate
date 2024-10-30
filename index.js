@@ -36,11 +36,19 @@ const postSchema = new mongoose.Schema({
   status: String
 });
 
-
 const User = mongoose.model('user', userSchema);
 const Post = mongoose.model('post', postSchema);
 
-//get method
+//get users
+app.get('/getUser', (req, res) => {
+
+  const userid = req.params.id;
+  User.find()
+    .then(user => res.send(user))
+    .catch(err => res.send('Error: ' + err));
+})
+
+//get user details 
 app.get('/getUser/:id', (req, res) => {
 
   const userid = req.params.id;
