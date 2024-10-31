@@ -64,8 +64,8 @@ app.post('/login', (req, res) => {
   User.findOne({ email: email, password: password })
     .then(loggedinuser => {
       if (loggedinuser) {
-        console.log(loggedinuser);
-        res.send({ "userId": loggedinuser._id });
+        console.log(loggedinuser._id.toString());
+        res.send({ "userId": loggedinuser._id.toString()});
       } else {
         res.status(400).send('Invalid email or password');
       }
@@ -73,10 +73,10 @@ app.post('/login', (req, res) => {
 });
 
 //register new user
-app.post('/registerUser', (req, res) => {
+app.post('/register', (req, res) => {
   const userDetails = req.body;
   //const newUser = new User(userDetails);
-
+console.log(userDetails);
   //validate email before insert 
   User.findOne({ email: userDetails.email })
     .then(existingUser => {
@@ -88,7 +88,7 @@ app.post('/registerUser', (req, res) => {
       }
     }).then(savedUser => {
       if (savedUser) {
-        res.send({ "userId": savedUser._id });
+        res.send({"userId": savedUser._id.toString()});
       }
     })
     .catch((error) => res.status(400).send('Error: ' + error));
