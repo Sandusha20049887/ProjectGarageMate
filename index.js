@@ -67,7 +67,7 @@ app.post('/login', (req, res) => {
         console.log(loggedinuser);
         res.send({ "userId": loggedinuser._id });
       } else {
-        res.status(400).send('Error: Invalid email or password');
+        res.status(400).send('Invalid email or password');
       }
     })
 });
@@ -81,7 +81,7 @@ app.post('/registerUser', (req, res) => {
   User.findOne({ email: userDetails.email })
     .then(existingUser => {
       if (existingUser) {
-        res.status(400).send('Error: Email already exists');
+        res.status(400).send('Email already exists');
       } else {
         const newUser = new User(userDetails);
         return newUser.save();

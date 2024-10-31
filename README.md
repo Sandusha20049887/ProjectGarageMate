@@ -9,3 +9,6 @@ npm start
 npm i mongodb
 npm i mongoose
 
+# installed cors 
+npm i cors
+
