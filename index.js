@@ -104,7 +104,7 @@ app.get('/getPost', (req, res) => {
 //get posts by user
 app.get('/getPost/:id', (req, res) => {
   const userid = req.params.id;
-  console.log(userid);
+  //console.log(userid);
   Post.find({ userId: userid })
     .then(post => res.send(post))
     .catch(err => res.send('Error: ' + err));
@@ -130,6 +130,14 @@ app.put('/updatePost/:id', (req, res) => {
   Post.findByIdAndUpdate(postID, updatePost, { new: true })
     .then(() => res.send('Post Updated!'))
     .catch((error) => res.status(400).send('Error: ' + error))
+})
+
+//delete post
+app.delete('/deletePost/:id',(req,res) =>{
+  const postId = req.params.id;
+  Post.findByIdAndDelete(postId)
+    .then(() => res.send('Post deleted!'))
+    .catch(error => res.status(400).send('Error: ' + error));
 })
 
 app.listen(port, () => {
