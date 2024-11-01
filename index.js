@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
 const postSchema = new mongoose.Schema({
   make: String,
   model: String,
-  year: String,
+  year: Number,
   faultDescription: String,
   garageName: String,
   garageAddress: String,
