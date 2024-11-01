@@ -64,8 +64,7 @@ app.post('/login', (req, res) => {
   User.findOne({ email: email, password: password })
     .then(loggedinuser => {
       if (loggedinuser) {
-        console.log(loggedinuser._id.toString());
-        res.send({ "userId": loggedinuser._id.toString()});
+        res.send({ "userId": loggedinuser._id});
       } else {
         res.status(400).send('Invalid email or password');
       }
@@ -88,7 +87,7 @@ console.log(userDetails);
       }
     }).then(savedUser => {
       if (savedUser) {
-        res.send({"userId": savedUser._id.toString()});
+        res.send({"userId": savedUser._id});
       }
     })
     .catch((error) => res.status(400).send('Error: ' + error));
@@ -106,7 +105,7 @@ app.get('/getPost', (req, res) => {
 app.get('/getPost/:id', (req, res) => {
   const userid = req.params.id;
   console.log(userid);
-  Post.find({ _id: userid })
+  Post.find({ userId: userid })
     .then(post => res.send(post))
     .catch(err => res.send('Error: ' + err));
 })
