@@ -60,7 +60,7 @@ app.get('/getUser/:id', (req, res) => {
 app.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-
+console.log(email+' '+password);
   User.findOne({ email: email, password: password })
     .then(loggedinuser => {
       if (loggedinuser) {
@@ -110,11 +110,21 @@ app.get('/getPost/:id', (req, res) => {
     .catch(err => res.send('Error: ' + err));
 })
 
+//get post by id
+app.get('/getPostById/:id', (req, res) => {
+  const postid = req.params.id;
+  //console.log(userid);
+  Post.find({ _id: postid })
+    .then(post => res.send(post))
+    .catch(err => res.send('Error: ' + err));
+})
+
+
 //add new Post
 app.post('/addPost', (req, res) => {
   const postDetails = req.body;
   const newPost = new Post(postDetails);
-
+console.log(postDetails);
   newPost.save()
     .then(() => res.send('Post added!'))
     .catch((error) => res.status(400).send('Error: ' + error));
