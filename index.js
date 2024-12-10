@@ -64,7 +64,7 @@ console.log(email+' '+password);
   User.findOne({ email: email, password: password })
     .then(loggedinuser => {
       if (loggedinuser) {
-        res.send({ "userId": loggedinuser._id});
+        res.send({ "userId": loggedinuser._id,"usern": loggedinuser.name});
       } else {
         res.status(400).send('Invalid email or password');
       }
@@ -87,7 +87,8 @@ console.log(userDetails);
       }
     }).then(savedUser => {
       if (savedUser) {
-        res.send({"userId": savedUser._id});
+        console.log(savedUser.name);
+        res.send({"userId": savedUser._id,"usern": savedUser.name});
       }
     })
     .catch((error) => res.status(400).send('Error: ' + error));
