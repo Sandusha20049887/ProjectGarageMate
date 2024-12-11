@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
   email: String
 });
 
+
 const postSchema = new mongoose.Schema({
   make: String,
   model: String,
